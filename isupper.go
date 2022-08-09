@@ -1,7 +1,5 @@
 package piscine
 
-import "fmt"
-
 func IsUpper(s string) bool {
 	s_rune := []rune(s)
 	count := 0
@@ -10,6 +8,5 @@ func IsUpper(s string) bool {
 			count++
 		}
 	}
-	fmt.Println(len(s))
 	return count == len(s)
 }
