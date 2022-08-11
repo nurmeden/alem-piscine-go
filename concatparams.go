@@ -1,13 +1,4 @@
-package main
-
-import (
-	"fmt"
-)
-
-func main() {
-	test := []string{"Hello", "how", "are", "you?"}
-	fmt.Println(ConcatParams(test))
-}
+package piscine
 
 func ConcatParams(args []string) string {
 	str_str := ""
