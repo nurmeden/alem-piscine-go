@@ -15,7 +15,7 @@ func printStr(s string) {
 
 func isEven(nbr int) bool {
 	result := true
-	if nbr == 1 {
+	if nbr%2 != 0 {
 		return result
 	} else {
 		result = false
