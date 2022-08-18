@@ -13,6 +13,7 @@ func main() {
 	for _, value := range arguments {
 		if search_01 == string(value) || search_galaxy == string(value) || search_galaxy_01 == string(value) {
 			fmt.Println("Alert!!!")
+			break
 		}
 	}
 }
