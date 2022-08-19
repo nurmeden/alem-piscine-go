@@ -1,217 +1,86 @@
 package main
 
 import (
-	// "fmt"
+	"fmt"
 	"os"
 )
 
-func PrintConsole(str string) {
-	os.Stdout.WriteString(str)
-	os.Stdout.WriteString("\n")
-	os.Stdout.Close()
-}
-
-func NbrToStrRec(n, dot int64) string {
-	if 10 > n && n > -1*10 {
-		return string('0' + n*dot)
-	}
-	return NbrToStrRec(n/10, dot) + string('0'+(n%10)*dot)
-}
-
-func NbrToStr(n int64) string {
-	dot := int64(1)
-	res := ""
-	if n == 0 {
-		return "0"
-	}
-	if n < 0 {
-		dot *= -1
-		res += "-"
-	}
-	return res + NbrToStrRec(n, dot)
-}
-
-func AtoiOverflow(a, b, c int64) bool {
-	if a < 0 && c < 0 {
-		return a*b+c < 0
-	} else if a > 0 && c > 0 {
-		return a*b+c > 0
-	}
-	return true
-}
-
-func MultiplyOverflow(a, b, c int64) bool {
-	prod := a*b + c
-	return (prod/b)-c == a
-}
-
-func PlusOverflow(a, b int64) bool {
-	if a < 0 && b < 0 {
-		return a+b < 0
-	} else if a > 0 && b > 0 {
-		return a+b > 0
-	}
-	return true
-}
-
-func MinusOverflow(a, b int64) bool {
-	if a < 0 && b < 0 {
-		if b <= a {
-			return a-b >= 0
+func operations(num1 int, num2 int, oper string) {
+	result := 0
+	if oper == "+" || oper == "\"+\"" {
+		result = num1 + num2
+		if num1 == 9223372036854775807 {
+			return
 		}
-		return a-b < 0
-	} else if a > 0 && b > 0 {
-		if a <= b {
-			return a-b <= 0
+		fmt.Println(result)
+	}
+	if oper == "-" || oper == "\"-\"" {
+		result = num1 - num2
+		if num1 == -9223372036854775807 {
+			return
 		}
-		return a-b > 0
+		fmt.Println(result)
 	}
-	return true
-}
-
-func Atoi(nbr string) (int64, bool) {
-	var res int64 = 0
-	var sign int64 = 1
-	if nbr[0] == '-' {
-		nbr = nbr[1:]
-		sign *= -1
-	} else if nbr[0] == '+' {
-		nbr = nbr[1:]
-	}
-	for _, digit := range nbr {
-		tmp := int64(digit-'0') * sign
-		if !AtoiOverflow(res, int64(10), tmp) {
-			return 0, false
+	if oper == "/" || oper == "\"/\"" {
+		if num2 == 0 {
+			fmt.Println("No division by 0")
+			return
 		}
-		res = res*10 + tmp
+		result = num1 / num2
+		fmt.Println(result)
 	}
-	return res, true
-}
-
-func Plus(a, b string) {
-	aa, aBool := Atoi(a)
-	if !aBool {
-		PrintConsole("0")
-		return
-	}
-	bb, bBool := Atoi(b)
-	if !bBool {
-		PrintConsole("0")
-		return
-	}
-	if !PlusOverflow(aa, bb) {
-		PrintConsole("0")
-		return
-	}
-	PrintConsole(NbrToStr(aa + bb))
-}
-
-func Deduct(a, b string) {
-	aa, aBool := Atoi(a)
-	if !aBool {
-		PrintConsole("0")
-		return
-	}
-	bb, bBool := Atoi(b)
-	if !bBool {
-		PrintConsole("0")
-		return
-	}
-	if !MinusOverflow(aa, bb) {
-		PrintConsole("-0")
-		return
-	}
-	PrintConsole(NbrToStr(aa - bb))
-}
-
-func Devide(a, b string) {
-	bb, bBool := Atoi(b)
-	if !bBool {
-		PrintConsole("0")
-		return
-	}
-	if bb == 0 {
-		PrintConsole("No division by 0")
-		return
-	}
-	aa, aBool := Atoi(a)
-	if !aBool {
-		PrintConsole("0")
-		return
-	}
-	PrintConsole(NbrToStr(aa / bb))
-}
-
-func Multiply(a, b string) {
-	aa, aBool := Atoi(a)
-	if !aBool {
-		PrintConsole("0")
-		return
-	}
-	bb, bBool := Atoi(b)
-	if !bBool {
-		PrintConsole("0")
-		return
-	}
-	if !MultiplyOverflow(aa, bb, 0) {
-		PrintConsole("0")
-		return
-	}
-	PrintConsole(NbrToStr(aa * bb))
-}
-
-func Mod(a, b string) {
-	bb, bBool := Atoi(b)
-	if !bBool {
-		PrintConsole("0")
-		return
-	}
-	if bb == 0 {
-		PrintConsole("No modulo by 0")
-		return
-	}
-	aa, aBool := Atoi(a)
-	if !aBool {
-		PrintConsole("0")
-		return
-	}
-	PrintConsole(NbrToStr(aa % bb))
-}
-
-func IsNumeric(str string) bool {
-	if str == "" {
-		return false
-	}
-	if str[0] == '-' || str[0] == '+' {
-		str = str[1:]
-	}
-	for _, s := range str {
-		if s < 48 || s > 57 {
-			return false
+	if oper == "*" || oper == "\"*\"" {
+		result = num1 * num2
+		if num1 == 9223372036854775807 {
+			return
 		}
+		fmt.Println(result)
 	}
-	return true
+	if oper == "%" || oper == "\"%\"" {
+		if num2 == 0 {
+			fmt.Println("No modulo by 0")
+			return
+		}
+		result = num1 % num2
+		fmt.Println(result)
+	}
 }
 
 func main() {
 	args := os.Args[1:]
-	argsCount := 0
-	for range args {
-		argsCount++
-	}
-	if argsCount != 3 {
-		return
-	}
-	if !(IsNumeric(args[0]) && IsNumeric(args[2])) {
-		PrintConsole("0")
-	}
-	funcsArr := []func(string, string){Plus, Deduct, Devide, Multiply, Mod}
-	operators := []string{"+", "-", "/", "*", "%"}
-	for i, val := range operators {
-		if val == args[1] {
-			funcsArr[i](args[0], args[2])
-			return
+	num1 := 0
+	num2 := 0
+	u := false
+	o := false
+	if len(args) == 3 {
+		for _, arg1 := range args[0] {
+			if arg1 == 45 {
+				u = true
+				continue
+			}
+			if (arg1 < '0' || arg1 > '9') && arg1 != 45 {
+				return
+			}
+			num1 = (num1*10 + int((arg1 - 48)))
 		}
+		if u {
+			num1 *= -1
+		}
+		for _, arg2 := range args[2] {
+			if arg2 == 45 {
+				o = true
+				continue
+			}
+			if (arg2 < '0' || arg2 > '9') && arg2 != 45 {
+				return
+			}
+			num2 = (num2*10 + int((arg2 - 48)))
+		}
+		if o {
+			num2 *= -1
+		}
+		operations(num1, num2, args[1])
+
 	}
-	PrintConsole("0")
+	return
 }
