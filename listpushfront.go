@@ -19,8 +19,9 @@ func ListPushFront(l *List, data interface{}) {
 		l.Head = result
 		l.Tail = result
 	} else {
-		l.Tail.Next = result
-		l.Tail = result
+		result := &NodeL{Data: data}
+		result.Next = l.Head
+		l.Head = result
 	}
 }
 
