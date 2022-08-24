@@ -1,31 +1,34 @@
 package piscine
 
-func BTreeLevelCount(root *TreeNode) int {
-	if root.Right == nil && root.Left == nil {
-		return 1
-	}
-	if root.Right == nil && root.Left != nil {
-		return 1 + BTreeLevelCount(root.Left)
-	}
-	if root.Right != nil && root.Left == nil {
-		return 1 + BTreeLevelCount(root.Right)
-	}
-	if root.Right != nil && root.Left != nil {
-		return BTreeLevelCount(root.Left) + BTreeLevelCount(root.Right)
-	}
-	return 0
+type TreeNode struct {
+	Left, Right, Parent *TreeNode
+	Data                string
 }
 
 func BTreeSearchItem(root *TreeNode, elem string) *TreeNode {
 	if root == nil {
 		return nil
 	}
-	if root.Data == elem {
-		return root
-	}
 	if elem < root.Data {
 		return BTreeSearchItem(root.Left, elem)
-	} else {
+	} else if elem > root.Data {
 		return BTreeSearchItem(root.Right, elem)
+	} else {
+		return root
 	}
+}
+
+func BTreeInsertData(root *TreeNode, data string) *TreeNode {
+	if root == nil {
+		return &TreeNode{Data: data}
+	}
+
+	if data < root.Data {
+		root.Left = BTreeInsertData(root.Left, data)
+		root.Left.Parent = root
+	} else if data > root.Data {
+		root.Right = BTreeInsertData(root.Right, data)
+		root.Right.Parent = root
+	}
+	return root
 }
