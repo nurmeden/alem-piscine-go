@@ -1,40 +1,43 @@
 package piscine
 
-import (
-	"github.com/01-edu/z01"
-)
+import "github.com/01-edu/z01"
 
-func main() {
-	EightQueens()
-}
+const N = 8
 
-func IsSafe(qn int, rp int, pos [8]int) bool {
-	for i := 0; i < qn; i++ {
-		t := pos[i]
-		if t == rp || t == rp-(qn-i) || t == rp+(qn-i) {
+var position = [N]int{}
+
+func isSafe(queen_number, row_position int) bool {
+	for i := 0; i < queen_number; i++ {
+		other_row_pos := position[i]
+
+		if other_row_pos == row_position || other_row_pos == row_position-(queen_number-i) || other_row_pos == row_position+(queen_number-i) {
 			return false
 		}
 	}
 	return true
 }
 
-func solve(nb int, pos [8]int) {
-	if nb == 8 {
-		for i := 0; i < 8; i++ {
-			z01.PrintRune(rune(pos[i] + '1'))
+func solve(k int) {
+	if k == N {
+		for i := 0; i < N; i++ {
+			gg := position[i] + 1
+			for gg > 0 {
+				t := gg % 10
+				z01.PrintRune(rune(int(rune(t)) + 48))
+				gg = gg / 10
+			}
 		}
 		z01.PrintRune('\n')
 	} else {
-		for i := 0; i < 8; i++ {
-			if IsSafe(nb, i, pos) {
-				pos[nb] = i
-				solve(nb+1, pos)
+		for i := 0; i < N; i++ {
+			if isSafe(k, i) {
+				position[k] = i
+				solve(k + 1)
 			}
 		}
 	}
 }
 
 func EightQueens() {
-	pos := [8]int{0, 0, 0, 0, 0, 0, 0}
-	solve(0, pos)
+	solve(0)
 }
