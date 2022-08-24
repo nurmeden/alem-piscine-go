@@ -27,7 +27,6 @@ func solve(k int) {
 				gg = gg / 10
 			}
 		}
-		z01.PrintRune('\n')
 	} else {
 		for i := 0; i < N; i++ {
 			if isSafe(k, i) {
