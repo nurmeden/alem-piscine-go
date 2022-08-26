@@ -2,36 +2,32 @@ package piscine
 
 import "github.com/01-edu/z01"
 
-const N = 8
+var pos = [8]int{}
 
-var position = [N]int{}
-
-func isSafe(queen_number, row_position int) bool {
-	for i := 0; i < queen_number; i++ {
-		other_row_pos := position[i]
-
-		if other_row_pos == row_position || other_row_pos == row_position-(queen_number-i) || other_row_pos == row_position+(queen_number-i) {
+func isSafe(col, row int) bool {
+	for i := 0; i < col; i++ {
+		prevrow := pos[i]
+		if prevrow == row {
+			return false
+		}
+		if row == prevrow+(col-i) || row == prevrow-(col-i) {
 			return false
 		}
 	}
 	return true
 }
 
-func solve(k int) {
-	if k == N {
-		for i := 0; i < N; i++ {
-			gg := position[i] + 1
-			for gg > 0 {
-				t := gg % 10
-				z01.PrintRune(rune(int(rune(t)) + 48))
-				gg = gg / 10
-			}
+func solve(n int) {
+	if n == 8 {
+		for i := 0; i < 8; i++ {
+			z01.PrintRune(rune(pos[i] + 49))
 		}
+		z01.PrintRune(10)
 	} else {
-		for i := 0; i < N; i++ {
-			if isSafe(k, i) {
-				position[k] = i
-				solve(k + 1)
+		for i := 0; i < 8; i++ {
+			if isSafe(n, i) {
+				pos[n] = i
+				solve(n + 1)
 			}
 		}
 	}
