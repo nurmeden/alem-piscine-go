@@ -1,15 +1,19 @@
 package piscine
 
-// type TreeNode struct {
-// 	Left, Right, Parent *TreeNode
-// 	Data                string
-// }
-func BTreeApplyInorder(root *TreeNode, f func(...interface{}) (int, error)) {
+func BTreeApplyByLevel(root *TreeNode, f func(...interface{}) (int, error)) {
+	for i := 1; i <= BTreeLevelCount(root); i++ {
+		AtLevel(root, i, f)
+	}
+}
+
+func AtLevel(root *TreeNode, i int, f func(...interface{}) (int, error)) {
 	if root == nil {
 		return
 	}
-	BTreeApplyInorder(root.Left, f)
-	f(root.Data)
-
-	BTreeApplyInorder(root.Right, f)
+	if i == 1 {
+		f(root.Data)
+	} else if i > 1 {
+		AtLevel(root.Left, i-1, f)
+		AtLevel(root.Right, i-1, f)
+	}
 }
