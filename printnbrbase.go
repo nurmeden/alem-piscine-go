@@ -1,57 +1,59 @@
 package piscine
 
-import "github.com/01-edu/z01"
+import (
+	"github.com/01-edu/z01"
+)
 
 func PrintNbrBase(nbr int, base string) {
-	len := StrLength(base)
-	runes := []rune(base)
-	valid := true
-	if len < 2 {
-		valid = false
-	} else {
-		for i := 0; i < len; i++ {
-			if runes[i] == '-' || runes[i] == '+' {
-				valid = false
-			}
-			for j := i + 1; j < len; j++ {
-				if runes[i] == runes[j] {
-					valid = false
-				}
-			}
-		}
-	}
-	if !valid {
+	var minus bool = false
+	var max_num bool = false
+	if !IsUniqueForNbrbase(base) || len(base) < 2 {
 		z01.PrintRune('N')
 		z01.PrintRune('V')
 	} else {
-		if nbr == 0 {
-			z01.PrintRune(runes[0])
-		} else {
-			if nbr < 0 {
-				z01.PrintRune('-')
+		if nbr < 0 {
+			if nbr == -9223372036854775808 {
+				nbr = -9223372036854775807
+				max_num = true
 			}
-			BaseRecursion(nbr, runes, len)
+			nbr = nbr * -1
+			minus = true
+		}
+		res := BaseForNbrbase(nbr, len(base))
+		if minus {
+			z01.PrintRune('-')
+		}
+		for i := len(res) - 1; i >= 0; i-- {
+			if max_num && i == 0 {
+				z01.PrintRune(rune(base[res[i]+1]))
+			} else {
+				z01.PrintRune(rune(base[res[i]]))
+			}
 		}
 	}
 }
 
-func BaseRecursion(n int, runes []rune, len int) {
-	if n/len != 0 {
-		BaseRecursion(n/len, runes, len)
+func IsUniqueForNbrbase(s string) bool {
+	for i := 0; i < len(s); i++ {
+		if s[i] == '+' || s[i] == '-' {
+			return false
+		}
+		for j := len(s) - 1; j > i; j-- {
+			if s[j] == s[i] {
+				return false
+			}
+		}
 	}
-	mod := n % len
-	if mod < 0 {
-		mod = -mod
-	}
-	z01.PrintRune(runes[mod])
+	return true
 }
 
-func StrLength(str string) int {
-	runes := []rune(str)
-	var count int = 0
-	for i := range runes {
-		count++
-		i++
+func BaseForNbrbase(num int, base int) []int {
+	var temp int
+	res := []int{}
+	for num > 0 {
+		temp = num % base
+		num = num / base
+		res = append(res, temp)
 	}
-	return count
+	return res
 }
