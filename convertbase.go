@@ -1,18 +1,21 @@
 package piscine
 
+func ToBaseRec(nbr int, base []rune, size int) string {
+	if nbr < size {
+		return string(base[nbr])
+	}
+	return ToBaseRec(nbr/size, base, size) + string(base[nbr%size])
+}
+
+func ToBase(nbr int, base string) string {
+	size := 0
+	for range base {
+		size++
+	}
+	return ToBaseRec(nbr, []rune(base), size)
+}
+
 func ConvertBase(nbr, baseFrom, baseTo string) string {
-	res1 := AtoiBase(nbr, baseFrom)
-	lens := len(baseTo)
-	runes := []rune(baseTo)
-	str := ""
-	for res1 != 0 {
-		temp := res1 % lens
-		str += string(runes[temp])
-		res1 /= lens
-	}
-	res := ""
-	for i := len(str) - 1; i >= 0; i-- {
-		res += string(str[i])
-	}
-	return res
+	number := AtoiBase(nbr, baseFrom)
+	return ToBase(number, baseTo)
 }
