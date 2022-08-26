@@ -1,7 +1,5 @@
 package piscine
 
-<<<<<<< HEAD
-=======
 type TreeNode struct {
 	Left, Right, Parent *TreeNode
 	Data                string
@@ -23,20 +21,12 @@ func BTreeLevelCount(root *TreeNode) int {
 	return 0
 }
 
->>>>>>> 922cc1cdb52d99f448a5678d8eb8fd7a08b3bb38
 func BTreeSearchItem(root *TreeNode, elem string) *TreeNode {
 	if root == nil {
 		return nil
 	}
 	if root.Data == elem {
 		return root
-<<<<<<< HEAD
-	}
-	if root.Data < elem {
-		return BTreeSearchItem(root.Right, elem)
-	} else {
-		return BTreeSearchItem(root.Left, elem)
-=======
 	}
 	if elem < root.Data {
 		return BTreeSearchItem(root.Left, elem)
@@ -82,7 +72,6 @@ func BTreeInsertData(root *TreeNode, data string) *TreeNode {
 	} else {
 		root.Right = BTreeInsertData(root.Right, data)
 		root.Right.Parent = root
->>>>>>> 922cc1cdb52d99f448a5678d8eb8fd7a08b3bb38
 	}
-	return nil
+	return root
 }
