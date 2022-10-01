@@ -80,7 +80,6 @@ func main() {
 			num2 *= -1
 		}
 		operations(num1, num2, args[1])
-
 	}
 	return
 }
