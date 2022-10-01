@@ -45,7 +45,6 @@ func operations(num1 int, num2 int, oper string) {
 		fmt.Println(result)
 	}
 }
-
 func main() {
 	args := os.Args[1:]
 	num1 := 0
